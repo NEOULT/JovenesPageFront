@@ -1,0 +1,378 @@
+/* Email column dynamic and responsive width */
+.email-col {
+  min-width: 180px;
+  max-width: 100%;
+  width: auto;
+}
+
+@media (max-width: 600px) {
+  .email-col {
+    min-width: 120px;
+    font-size: 0.92em;
+  }
+}
+/* Email cell ellipsis and scroll for mobile */
+.email-ellipsis {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+  .email-ellipsis {
+    max-width: 80px;
+    font-size: 0.82em;
+    overflow-x: auto;
+  }
+}
+/* PersonasList responsive table tweaks */
+.personas-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+.personas-table-compact .p-datatable-table {
+  font-size: 0.95em;
+}
+
+@media (max-width: 600px) {
+  .personas-table-compact .p-datatable-table {
+    font-size: 0.82em;
+  }
+  .personas-table-compact .p-datatable-thead > tr > th,
+  .personas-table-compact .p-datatable-tbody > tr > td {
+    padding: 3px 3px;
+    min-width: 80px;
+    max-width: 160px;
+    white-space: nowrap;
+    word-break: break-word;
+  }
+  .personas-table-responsive {
+    max-width: 100vw;
+    overflow-x: auto;
+  }
+}
+/* Self-hosted Gotham font faces */
+@font-face {
+  font-family: 'Gotham';
+  src: url('./public/fonts/Gotham/Gotham Regular/Gotham Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('./public/fonts/Gotham/Gotham Medium/Gotham Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('./public/fonts/Gotham/Gotham Bold/Gotham Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('./public/fonts/Gotham/Gotham Light/Gotham Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root{
+  /* Palette inferred from provided image (approximate) */
+  --bg: #f4f4f5; /* very light gray */
+  --surface: #ffffff;
+  --muted: #cfcfcf;
+  --text: #333333;
+  --accent: #b89a32; /* mustard */
+  --accent-2: #7f9fb0; /* blue-gray */
+  /* Font weights */
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-bold: 700;
+}
+
+/* Global reset */
+html,body,#root{
+  height:100%;
+  margin:0;
+  font-family: 'Gotham', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg) 0%, #eef2f4 100%);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Softer default text appearance */
+body{
+  font-weight: var(--fw-light);
+  line-height: 1.45;
+  letter-spacing: 0.2px;
+}
+
+h1,h2,h3{
+  font-weight: var(--fw-medium);
+}
+h4,h5,h6{
+  font-weight: var(--fw-regular);
+}
+
+/* App layout */
+.app-container{
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+  align-items:center;
+}
+
+.hero{
+  width:100%;
+  max-width:980px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:22px 12px 6px 12px; /* reduced top/bottom spacing */
+  text-align:center;
+}
+
+.hero-logo{
+  width:160px; /* smaller so layout is tighter */
+  height:auto;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.08));
+}
+
+.hero-subtitle{
+  margin:8px 0 0 0;
+  color: var(--muted);
+  font-weight: var(--fw-regular);
+  letter-spacing:0.3px;
+  font-size:18px;
+}
+
+.content{
+  width:100%;
+  max-width:980px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:14px; /* slightly tighter */
+  padding:12px 18px; /* reduced padding */
+  box-sizing:border-box;
+}
+
+/* center modifier: used when a single element should be centered */
+.content.center{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:18px 12px; /* reduced */
+}
+
+.center-form{
+  display:flex;
+  justify-content:center;
+  width:100%;
+}
+
+.card{
+  background: var(--surface);
+  border-radius:8px;
+  padding:14px; /* reduced padding */
+  box-shadow: 0 6px 14px rgba(18,24,33,0.05);
+  border: 1px solid rgba(0,0,0,0.035);
+}
+
+.card h3{
+  margin-top:0;
+  color: var(--accent-2);
+  font-size:18px;
+}
+
+/* Make form controls fill their grid cells to avoid empty side gutters */
+.card form input,
+.card form select,
+.card form textarea{
+  width:100%;
+  box-sizing:border-box;
+  border:1px solid #e3eaee;
+  border-radius:8px;
+  padding:10px 12px;
+  height:38px;
+  background: #fbfcfd;
+  font-size:14px;
+  transition: box-shadow .18s ease, border-color .12s ease, transform .06s ease;
+}
+
+.card form label{ width:100% }
+
+.card .center-form{ padding: 8px 0 }
+
+/* modern focus + subtle elevation */
+.card form input:focus,
+.card form select:focus,
+.card form textarea:focus{
+  outline: none;
+  border-color: rgba(127,159,176,0.9); /* accent-2 */
+  box-shadow: 0 6px 18px rgba(127,159,176,0.08);
+  transform: translateY(-1px);
+}
+
+/* checkbox alignment */
+.card form label[style] { display:flex; align-items:center; }
+.card form label input[type="checkbox"]{ width:auto; margin:0 10px 0 0 }
+
+/* compact grid spacing */
+.card form > div[style] { gap:10px }
+
+/* modern button */
+button:not(.p-button){
+  background: linear-gradient(180deg, var(--accent) 0%, #a98223 100%);
+  color: white;
+  border: none;
+  padding:8px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  box-shadow: 0 6px 14px rgba(184,154,50,0.14);
+  font-weight: var(--fw-regular);
+}
+
+button:disabled{ opacity:0.6; cursor:not-allowed }
+
+/* make the checkbox label sit to the right and not wrap awkwardly */
+.card form label{ gap:8px }
+
+/* PrimeReact float label: keep labels light for a softer look */
+.p-float-label label{
+  font-weight: var(--fw-light);
+}
+
+/* Ensure form text is readable even with light body weight */
+.sm-form .p-inputtext,
+.sm-form .p-dropdown .p-dropdown-label {
+  font-weight: var(--fw-regular);
+}
+
+button:not(.p-button){
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding:8px 12px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+button:hover{ filter: brightness(0.98); }
+
+.footer{
+  margin-top:auto;
+  padding:18px 0 36px 0;
+  color: var(--muted);
+}
+
+/* Responsive */
+@media (max-width: 800px){
+  .personas-table-responsive {
+    max-width: 98vw;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    background: #fff;
+  }
+/* Small form variant for PrimeReact controls */
+.sm-form .p-inputtext,
+.sm-form .p-calendar .p-inputtext,
+.sm-form .p-inputnumber .p-inputtext{
+  padding: 0.35rem 0.55rem;
+  font-size: 0.9rem;
+  height: 2.25rem;
+}
+.sm-form .p-dropdown .p-dropdown-label{
+  padding: 0.35rem 0.55rem;
+  font-size: 0.9rem;
+  min-height: 2.25rem;
+}
+.sm-form .p-dropdown .p-dropdown-trigger{
+  width: 2.25rem;
+}
+.sm-form .p-calendar .p-button{ /* calendar icon button */
+  height: 2.25rem;
+  width: 2.25rem;
+}
+
+.sm-form .formgrid.grid > .field {
+padding-top: 0.25rem;
+padding-bottom: 0.25rem;
+}
+
+/* Make persistent mask look lighter until completed */
+.sm-form .mask-faint{
+  color: #9aa8b0; /* muted */
+}
+
+/* Toast (snackbar) modern look */
+.toast-clean .p-toast-message{
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-left: 4px solid #22c55e; /* modern success accent */
+  border-radius: 10px;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+}
+.toast-clean .p-toast-message .p-toast-message-icon{ display: none; }
+.toast-clean .p-toast-message .p-toast-message-content{ padding-left: 0.75rem; }
+.toast-clean .p-toast-message .p-toast-icon-close{
+  color: #6b7280; /* neutral gray instead of gold */
+  background: transparent !important; /* remove gold background from global button styles */
+  border: none !important;
+  box-shadow: none !important;
+}
+.toast-clean .p-toast-message .p-toast-icon-close:hover{ color: #374151; }
+
+/* Fix: ensure PrimeReact input icons align correctly with compact inputs */
+.p-input-icon-left,
+.p-input-icon-right{
+  position: relative; /* reinforce positioning to avoid overrides */
+}
+.p-input-icon-left .p-inputtext{ padding-left: 2.5rem !important; }
+.p-input-icon-right .p-inputtext{ padding-right: 2.5rem !important; }
+.p-input-icon-left > i,
+.p-input-icon-left > svg,
+.p-input-icon-right > i,
+.p-input-icon-right > svg{
+  position: absolute;
+  top: 70%;
+  transform: translateY(-50%);
+  color: #9aa8b0; /* subtle icon tone */
+}
+.p-input-icon-left > i,
+.p-input-icon-left > svg{ left: 0.75rem; }
+.p-input-icon-right > i,
+.p-input-icon-right > svg{ right: 0.75rem; }
+
+/* Mobile helpers */
+@media (max-width: 620px){
+  /* Hide selected datatable columns on small screens */
+  .p-datatable .p-datatable-thead > tr > th.col-sm-hide,
+  .p-datatable .p-datatable-tbody > tr > td.col-sm-hide{
+    display: none !important;
+  }
+  /* Reduce inner padding slightly for small devices */
+  .p-datatable .p-datatable-thead > tr > th,
+  .p-datatable .p-datatable-tbody > tr > td{
+    padding: 0.45rem 0.5rem;
+  }
+}
+
+}
+
