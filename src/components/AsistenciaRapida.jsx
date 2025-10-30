@@ -10,6 +10,7 @@ export default function AsistenciaRapida(){
   const [clase, setClase] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [notFound, setNotFound] = useState(false)
   const toastRef = React.useRef(null)
 
   const extractItems = (res) => {
@@ -26,12 +27,17 @@ export default function AsistenciaRapida(){
     setError('')
     setFound(null)
     setClase(null)
+    setNotFound(false)
     try {
       const isDigits = /^\d+$/.test(term.trim())
       // Pide hasta 2 para saber si es único; si hay 0 o >1 no mostramos resultado
       const params = isDigits ? { cedula: term.trim() } : { nombreCompleto: term.trim() }
       const personasRes = await getPersonas(params)
       const personas = extractItems(personasRes)
+      if (personas.length === 0) {
+        setNotFound(true)
+        return
+      }
       const persona = personas[0]
       setFound(persona)
       const today = new Date().toISOString().slice(0,10)
@@ -103,6 +109,24 @@ export default function AsistenciaRapida(){
             <div>
               <Button label="Sí, Asistí a Clase" icon="pi pi-check" className="p-button-sm" onClick={confirmar} disabled={!clase || loading} />
             </div>
+          </div>
+        )}
+
+        {!loading && notFound && !found && (
+          <div className="col-12" style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#374151' }}>
+            <span>¿No te has registrado?</span>
+            <Button
+              label="Regístrate aquí"
+              className="p-button-link p-button-sm"
+              onClick={() => {
+                const raw = term.trim()
+                const isDigits = /^\d+$/.test(raw)
+                const params = new URLSearchParams()
+                if (isDigits) params.set('cedula', raw)
+                else if (raw) params.set('nombre', raw)
+                window.location.hash = `#/registro?${params.toString()}`
+              }}
+            />
           </div>
         )}
       </div>

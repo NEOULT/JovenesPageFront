@@ -45,8 +45,8 @@ export default function App() {
       ) : (
         <main className="content">
           <nav style={{ gridColumn: '1 / -1', margin: '0 auto 8px', display: 'flex', gap: 8, maxWidth: 980, width: '100%', justifyContent: 'center' }}>
-            <a href="#/registro" className="p-button p-button-text p-button-sm" style={{ textDecoration: 'none', padding: '6px 10px', borderRadius: 8, background: homeSection==='registro' ? 'rgba(127,159,176,0.12)' : 'transparent' }}>Registro</a>
-            <a href="#/asistencia" className="p-button p-button-text p-button-sm" style={{ textDecoration: 'none', padding: '6px 10px', borderRadius: 8, background: homeSection==='asistencia' ? 'rgba(127,159,176,0.12)' : 'transparent' }}>Asistencia</a>
+            <a href="#/registro" className="p-button p-button-text p-button-sm" style={{ textDecoration: 'none', padding: '6px 10px', borderRadius: 8, background: homeSection==='registro' ? 'rgba(127,159,176,0.12)' : 'transparent' }}>Soy nuevo</a>
+            <a href="#/asistencia" className="p-button p-button-text p-button-sm" style={{ textDecoration: 'none', padding: '6px 10px', borderRadius: 8, background: homeSection==='asistencia' ? 'rgba(127,159,176,0.12)' : 'transparent' }}>Marcar mi asistencia</a>
           </nav>
 
           {homeSection === 'registro' && (

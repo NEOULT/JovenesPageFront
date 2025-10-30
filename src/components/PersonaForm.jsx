@@ -39,6 +39,31 @@ export default function PersonaForm({ onCreated }) {
     setForm(prev => ({ ...prev, [name]: checked }))
   }
 
+  // Prefill from hash query: #/registro?cedula=... or ?nombre=...
+  React.useEffect(() => {
+    const hash = window.location.hash || ''
+    const qIndex = hash.indexOf('?')
+    if (qIndex === -1) return
+    const query = hash.slice(qIndex + 1)
+    const params = new URLSearchParams(query)
+    const ced = params.get('cedula')
+    const nom = params.get('nombre')
+    if (ced || nom) {
+      setForm(prev => {
+        const next = { ...prev }
+        if (ced) next.cedula = String(ced).replace(/\D/g, '').slice(-8)
+        if (nom) {
+          const words = String(nom).trim().split(/\s+/)
+          next.nombre = words.shift() || ''
+          next.apellido = words.join(' ')
+        }
+        return next
+      })
+      // Clear query to avoid re-applying
+      try { window.history.replaceState(null, '', '#/registro') } catch {}
+    }
+  }, [])
+
   // Phone: format display but store only digits; disallow leading zero
   const onPhoneChange = (e) => {
     const value = e?.target?.value || ''
