@@ -25,7 +25,7 @@ export default function PersonaForm({ onCreated }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [fieldErrors, setFieldErrors] = useState({})
-  const isSundayToday = new Date().getDay() === 4
+  const isSundayToday = new Date().getDay() === 0
   const telRef = useRef(null)
   const toastRef = useRef(null)
 
