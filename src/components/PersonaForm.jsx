@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { createPersona, getActividadesSemana, asistirActividad } from '../services/api'
 import { InputText } from 'primereact/inputtext'
 import { Calendar } from 'primereact/calendar'
@@ -28,6 +28,16 @@ export default function PersonaForm({ onCreated }) {
   const isSundayToday = new Date().getDay() === 2
   const telRef = useRef(null)
   const toastRef = useRef(null)
+  const [showWelcome, setShowWelcome] = useState(false)
+  const confettiRef = useRef(null)
+  const [welcomeName, setWelcomeName] = useState('')
+
+  useEffect(() => {
+    if (showWelcome && confettiRef.current) {
+      // lazy-load/start confetti
+      try { startConfetti(confettiRef.current) } catch (e) { /* ignore */ }
+    }
+  }, [showWelcome])
 
   const onChange = (e, name) => {
     const val = e && e.target ? e.target.value : e
@@ -206,6 +216,12 @@ export default function PersonaForm({ onCreated }) {
       if (toastRef.current) {
         const extra = asistenciaDetalle ? ` y asistencia marcada en ${asistenciaDetalle.titulo}` : ''
         toastRef.current.show({ severity: 'success', summary: 'Éxito', detail: `Joven registrado exitosamente${extra}`, life: 3000 })
+        // set welcome name and show centered welcome overlay with confetti
+        const nameToShow = createdPersona?.nombre || createdPersona?.name || ''
+        setWelcomeName(nameToShow)
+        setShowWelcome(true)
+        // hide after a short while and clear welcome name
+        setTimeout(() => { setShowWelcome(false); setWelcomeName('') }, 3800)
       }
       setForm({ nombre: '', apellido: '', email: '', telefono: '', fecha_nacimiento: null, bautizado: false, genero: 'M', ministerio: '', nivel_academico: '', ocupacion: '', cedula: '' })
       setFieldErrors({})
@@ -237,6 +253,16 @@ export default function PersonaForm({ onCreated }) {
   return (
     <form onSubmit={onSubmit} className="p-fluid sm-form" style={{ maxWidth: 980, margin: '0 auto' }}>
       <Toast ref={toastRef} position="bottom-right" className="toast-clean" />
+      {/* Welcome overlay + confetti canvas */}
+      {showWelcome && (
+        <div className="welcome-overlay" onClick={() => setShowWelcome(false)}>
+          <canvas ref={confettiRef} className="welcome-canvas" />
+          <div className="welcome-card">
+            <h2>¡Bienvenid@{welcomeName ? (`, ${welcomeName}`) : ''}!</h2>
+            <p className="welcome-sub">al ministerio Jovenes con Proposito 🎉</p>
+          </div>
+        </div>
+      )}
       <div className="formgrid grid">
         <div className="field col-12 sm:col-6 mb-3">
           <span className="p-float-label">
@@ -394,4 +420,53 @@ export default function PersonaForm({ onCreated }) {
       {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
     </form>
   )
+}
+
+// Confetti effect: attach to overlay canvas when mounted
+export function startConfetti(canvas) {
+  if (!canvas) return
+  const ctx = canvas.getContext('2d')
+  const dpi = window.devicePixelRatio || 1
+  const w = window.innerWidth
+  const h = window.innerHeight
+  canvas.width = w * dpi
+  canvas.height = h * dpi
+  canvas.style.width = w + 'px'
+  canvas.style.height = h + 'px'
+  ctx.scale(dpi, dpi)
+
+  const colors = ['#ef4444', '#f97316', '#f59e0b', '#10b981', '#06b6d4', '#3b82f6', '#8b5cf6']
+  const particles = []
+  const count = 80
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: w / 2 + (Math.random() - 0.5) * 120,
+      y: h / 2 + (Math.random() - 0.7) * 40,
+      vx: (Math.random() - 0.5) * 8,
+      vy: (Math.random() - 1.5) * 8,
+      size: Math.random() * 6 + 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      life: 80 + Math.floor(Math.random() * 40)
+    })
+  }
+
+  let frame = 0
+  function tick() {
+    frame++
+    ctx.clearRect(0, 0, w, h)
+    particles.forEach((p) => {
+      p.x += p.vx
+      p.y += p.vy
+      p.vy += 0.25 // gravity
+      p.vx *= 0.99
+      p.life--
+      ctx.fillStyle = p.color
+      ctx.beginPath()
+      ctx.ellipse(p.x, p.y, p.size, p.size * 0.7, Math.PI * 2 * Math.random(), 0, Math.PI * 2)
+      ctx.fill()
+    })
+    if (frame < 180) requestAnimationFrame(tick)
+    else ctx.clearRect(0, 0, w, h)
+  }
+  tick()
 }

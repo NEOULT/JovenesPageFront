@@ -337,6 +337,43 @@ padding-bottom: 0.25rem;
   .toast-clean .p-toast-message .p-toast-icon-close{ font-size: 0.9rem; width: 1.75rem; height: 1.75rem; }
 }
 
+/* Welcome overlay + confetti */
+.welcome-overlay{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  z-index: 1200;
+  background: rgba(0,0,0,0.28); /* dim background to improve contrast */
+}
+.welcome-canvas{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.welcome-card{
+  position: relative;
+  z-index: 1210;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px 26px;
+  box-shadow: 0 18px 44px rgba(0,0,0,0.28);
+  text-align: center;
+  min-width: 280px;
+  max-width: 92vw;
+}
+.welcome-card h2{ margin: 0 0 8px 0; font-size: 2rem; color: #0f172a; font-weight: 700 }
+.welcome-card p{ margin: 0; font-size: 1.1rem; color: #374151 }
+.welcome-card .welcome-sub{ font-weight: 600; }
+
 /* Fix: ensure PrimeReact input icons align correctly with compact inputs */
 .p-input-icon-left,
 .p-input-icon-right{
