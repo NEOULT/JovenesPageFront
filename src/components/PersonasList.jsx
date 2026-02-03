@@ -65,13 +65,19 @@ export default function PersonasList() {
       {loading ? (
         <div>Cargando...</div>
       ) : (
-          <div className="personas-table-responsive">
-            <DataTable value={list} size="small" scrollable scrollHeight="320px" scrollDirection="both" className="personas-table-compact" autoLayout>
-              <Column field="nombre" header="Nombre" sortable></Column>
-              <Column field="apellido" header="Apellido" sortable></Column>
-              <Column field="cedula" header="Cédula" sortable></Column>
+          <div className="personas-table-responsive" style={{ overflowX: 'auto', width: '100%' }}>
+            <DataTable value={list} size="small" scrollable scrollHeight="320px" scrollDirection="both" className="personas-table-compact" style={{ minWidth: 1200 }}>
+              <Column field="nombre" header="Nombre" sortable style={{ minWidth: 140 }} />
+              <Column field="apellido" header="Apellido" sortable style={{ minWidth: 160 }} />
+              <Column field="cedula" header="Cédula" sortable style={{ minWidth: 120 }} />
               <Column field="email" header="Email" style={{ minWidth: 220 }} />
-              <Column field="telefono" header="Teléfono"></Column>
+              <Column field="telefono" header="Teléfono" style={{ minWidth: 140 }} />
+              <Column field="fecha_nacimiento" header="Fecha Nacimiento" style={{ minWidth: 160 }} />
+              <Column field="bautizado" header="Bautizado" style={{ minWidth: 100 }} body={rowData => rowData.bautizado ? 'Sí' : 'No'} />
+              <Column field="genero" header="Género" style={{ minWidth: 80 }} />
+              <Column field="ministerio" header="Ministerio" style={{ minWidth: 200 }} />
+              <Column field="nivel_academico" header="Nivel Académico" style={{ minWidth: 220 }} />
+              <Column field="ocupacion" header="Ocupación" style={{ minWidth: 180 }} />
             </DataTable>
           </div>
       )}
